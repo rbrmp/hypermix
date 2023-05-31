@@ -10,7 +10,7 @@ if __name__ == "__main__":
     QGuiApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
     app = QApplication(sys.argv)
-    plugins=os.listdir("./Plugins")
+    plugins = os.listdir("./Plugins")
     w = mw.MainWindow(plugins)
 
     extra = {
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     'density_scale': '-2',
     }
 
-    apply_stylesheet(app, theme='light_blue.xml',extra=extra)
+    apply_stylesheet(app, theme='dark_purple.xml',extra=extra)
 
     w.show()
     sys.exit(app.exec_())
