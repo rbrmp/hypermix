@@ -1,7 +1,7 @@
 import sys
 
 import numpy as np
-from PyQt5.QtGui import QColor, QTransform
+from PyQt5.QtGui import QColor, QTransform, QPen
 from PyQt5.QtWidgets import QMainWindow, QGraphicsScene, QWidget, QApplication, QGraphicsRectItem, QGraphicsItem, \
     QGraphicsColorizeEffect
 from PyQt5 import QtWidgets, uic
@@ -19,26 +19,32 @@ class MyScene(QGraphicsScene):
         self.current_item = None
 
     def addBox(self, box):
-        print("1add current box ", self.current_item)
         box.setId(self.idBox)
         self.idBox = self.idBox + 1
+        self.numBoxes = self.numBoxes + 1
         self.opBoxes = np.append(self.opBoxes, box)
         self.addItem(box)
-        print("2add current box ", self.current_item)
+        print("add box, hay ", self.numBoxes)
+        print("en el array: ", self.opBoxes.size)
 
     def deleteBox(self):
         if self.current_item is not None:
+            index = np.where(self.current_item)
+            self.opBoxes = np.delete(self.opBoxes, index)
             self.removeItem(self.current_item)
             self.numBoxes = self.numBoxes - 1
+            print("delete box, hay ", self.numBoxes)
+            print("en el array: ", self.opBoxes.size)
 
     def highlightItem(self):
-        effect = QGraphicsColorizeEffect()
-        effect.setColor(QColor("yellow"))
-        self.current_item.setGraphicsEffect(effect)
+        #effect = QGraphicsColorizeEffect().setColor(QColor("yellow"))
+        #self.current_item.setGraphicsEffect(effect)
+        pen = QPen(QColor("yellow"), 5)
+        self.current_item.setPen(pen)
+
     def resetItem(self):
-        self.current_item.setGraphicsEffect(None)
-        del self.current_item.effect
-        print("a")
+        #self.current_item.setGraphicsEffect(None)
+        self.current_item.setPen(QPen(QColor(0, 0, 0, 0), 0))
 
     def mousePressEvent(self, event):
         item = self.itemAt(event.scenePos(), QTransform())
@@ -55,8 +61,10 @@ class MyScene(QGraphicsScene):
                     self.resetItem()
                     self.current_item = item
                     self.highlightItem()
+        else:
+            if self.current_item is not None: self.resetItem()
 
-            super().mousePressEvent(event)
+        super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
         if self.current_item is not None:
