@@ -101,8 +101,13 @@ class MainWindow(QMainWindow):
         self.formUi.batchSlider.setEnabled(False)
         self.formUi.batchLabel.setEnabled(False)
 
+
         if self.plugins != []:
             self.plug=self.formUi.menuBar.addMenu("Plugins")
+            path = '/home/rbr/Escritorio/TFG-JuanCarmona/images'
+            primer_elemento = os.listdir(path)[0]
+            path = os.path.join(path, primer_elemento)
+            self.load(path)
 
     #Actualiza las opciones del menú 
     def updateSettingsMenu(self):
